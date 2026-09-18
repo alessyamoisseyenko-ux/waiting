@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Скоро</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    html, body {
+        margin: 0;
+        padding: 0;
+        background: #000;
+        color: #fff;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body {
+        min-height: 100vh;
+    }
+
+    .page {
+        width: 100%;
+        max-width: 1400px;
+        margin: 0 auto;
+        text-align: center;
+    }
+
+    /* ТВОЯ КАРТИНКА */
+    .poster {
+        width: 100%;
+        display: block;
+        height: auto;
+    }
+
+    /* БЛОК ТАЙМЕРА */
+    .countdown-section {
+        padding: 60px 20px 80px;
+        background: #000;
+    }
+
+    .countdown-title {
+        margin: 0 0 35px;
+        font-size: 16px;
+        letter-spacing: 5px;
+        color: #888;
+        text-transform: uppercase;
+    }
+
+    .timer {
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        gap: 35px;
+    }
+
+    .unit {
+        min-width: 120px;
+    }
+
+    .number {
+        font-size: clamp(55px, 8vw, 100px);
+        font-weight: 800;
+        line-height: 1;
+        font-variant-numeric: tabular-nums;
+    }
+
+    .label {
+        margin-top: 15px;
+        font-size: 12px;
+        letter-spacing: 4px;
+        color: #777;
+    }
+
+    .separator {
+        font-size: 60px;
+        line-height: 1;
+        color: #444;
+    }
+
+    .bottom-text {
+        margin-top: 45px;
+        font-size: 14px;
+        letter-spacing: 4px;
+        color: #777;
+    }
+
+    /* ТЕЛЕФОН */
+    @media (max-width: 600px) {
+
+        .countdown-section {
+            padding: 45px 10px 60px;
+        }
+
+        .countdown-title {
+            font-size: 12px;
+            letter-spacing: 3px;
+            margin-bottom: 30px;
+        }
+
+        .timer {
+            gap: 7px;
+        }
+
+        .unit {
+            min-width: 60px;
+        }
+
+        .number {
+            font-size: clamp(34px, 12vw, 55px);
+        }
+
+        .label {
+            margin-top: 10px;
+            font-size: 8px;
+            letter-spacing: 2px;
+        }
+
+        .separator {
+            font-size: 32px;
+        }
+
+        .bottom-text {
+            margin-top: 35px;
+            font-size: 10px;
+            letter-spacing: 2px;
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<div class="page">
+
+    <!-- ТВОЯ КАРТИНКА -->
+    <img
+        class="poster"
+        src="Ресурс 1.jpg"
+        alt=""
+    >
+
+    <!-- ТАЙМЕР -->
+    <section class="countdown-section">
+
+        <div class="countdown-title">
+            До того самого дня
+        </div>
+
+        <div class="timer">
+
+            <div class="unit">
+                <div class="number" id="days">00</div>
+                <div class="label">ДНЕЙ</div>
+            </div>
+
+            <div class="separator">:</div>
+
+            <div class="unit">
+                <div class="number" id="hours">00</div>
+                <div class="label">ЧАСОВ</div>
+            </div>
+
+            <div class="separator">:</div>
+
+            <div class="unit">
+                <div class="number" id="minutes">00</div>
+                <div class="label">МИНУТ</div>
+            </div>
+
+            <div class="separator">:</div>
+
+            <div class="unit">
+                <div class="number" id="seconds">00</div>
+                <div class="label">СЕКУНД</div>
+            </div>
+
+        </div>
+
+        <div class="bottom-text">
+            МЫ ПОКА НИЧЕГО НЕ СКАЖЕМ.
+        </div>
+
+    </section>
+
+</div>
+
+<script>
+
+    /*
+       ДАТА ОТКРЫТИЯ
+
+       Сейчас стоит:
+       18 октября 2026 года в 12:00
+       Время Казахстана UTC+5
+    */
+
+    const openingDate = new Date(
+        "2026-10-18T12:00:00+05:00"
+    );
+
+    function updateTimer() {
+
+        const now = new Date();
+
+        const difference = openingDate - now;
+
+        /* Когда наступит дата открытия */
+        if (difference <= 0) {
+
+            document.querySelector(".timer").innerHTML = `
+                <div style="
+                    font-size: clamp(40px, 7vw, 90px);
+                    font-weight: 800;
+                ">
+                    МЫ ОТКРЫЛИСЬ.
+                </div>
+            `;
+
+            document.querySelector(".countdown-title").textContent =
+                "ВСЁ. ВРЕМЯ ПРИШЛО.";
+
+            document.querySelector(".bottom-text").textContent =
+                "ТЕПЕРЬ ЗАХОДИТЕ.";
+
+            return;
+        }
+
+        /* Расчёт времени */
+        const days = Math.floor(
+            difference / (1000 * 60 * 60 * 24)
+        );
+
+        const hours = Math.floor(
+            (difference / (1000 * 60 * 60)) % 24
+        );
+
+        const minutes = Math.floor(
+            (difference / (1000 * 60)) % 60
+        );
+
+        const seconds = Math.floor(
+            (difference / 1000) % 60
+        );
+
+        /* Вывод */
+        document.getElementById("days").textContent =
+            String(days).padStart(2, "0");
+
+        document.getElementById("hours").textContent =
+            String(hours).padStart(2, "0");
+
+        document.getElementById("minutes").textContent =
+            String(minutes).padStart(2, "0");
+
+        document.getElementById("seconds").textContent =
+            String(seconds).padStart(2, "0");
+    }
+
+    /* Запускаем */
+    updateTimer();
+
+    /* Обновляем каждую секунду */
+    setInterval(updateTimer, 1000);
+
+</script>
+
+</body>
+</html>
